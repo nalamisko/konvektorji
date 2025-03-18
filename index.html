@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Room Data</title>
+    <style>
+        body {
+            background-color: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+    <!-- Replace the image source URL with the hosted URL of your logo image -->
+    <img src="https://media.licdn.com/dms/image/D560BAQGP-8VTW1NgPA/company-logo_400_400/0/1666698378390?e=2147483647&v=beta&t=eBxDmyLHmGpYBGU_MSr7VJ6J37OoMQ8jFT_vdTZr2hk" alt="Company Logo" width="150" height="130">
+    
+    <h1>Servis konvektorjev</h1>
+    <form id="roomForm">
+        <label for="buildingName">Ime stavbe:</label>
+        <input type="text" id="buildingName" required><br><br>
+        
+        <label for="roomName">Pisarna:</label>
+        <input type="text" id="roomName" required><br><br>
+        
+        <label for="roomNumber">Število konvektorjev:</label>
+        <input type="number" id="roomNumber" required><br><br>
+        
+        <label for="roomComment">Opomba:</label>
+        <input type="text" id="roomComment" required><br><br>
+        
+        <button type="button" onclick="addRoomData()">Dodaj</button>
+    </form>
+    
+    <img src="https://ekonatim.rs/storage/slike/202207/sabiana-mo-crc-ekonatimrs-fancoil.png" alt="Fan coil" width="200" height="150">
+    
+    <h2>Seznam konvektorjev</h2>
+    <table id="roomTable" border="1">
+        <thead>
+            <tr>
+                <th>Pisarna</th>
+                <th>Stevilo konvektorjev</th>
+                <th>Opomba</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <button onclick="exportToNotebook()">Izvozi datoteko</button>
+
+    <script>
+        var buildingName = ""; // Variable to store the building name
+
+        function addRoomData() {
+            var roomTable = document.getElementById("roomTable").getElementsByTagName('tbody')[0];
+            var roomName = document.getElementById("roomName").value;
+            var roomNumber = document.getElementById("roomNumber").value;
+            var roomComment = document.getElementById("roomComment").value;
+
+            var newRow = roomTable.insertRow(roomTable.rows.length);
+            var cell1 = newRow.insertCell(0);
+            var cell2 = newRow.insertCell(1);
+            var cell3 = newRow.insertCell(2);
+
+            cell1.innerHTML = roomName;
+            cell2.innerHTML = roomNumber;
+            cell3.innerHTML = roomComment;
+            
+            // Clear input fields
+            document.getElementById("roomName").value = "";
+            document.getElementById("roomNumber").value = "";
+            document.getElementById("roomComment").value = "";
+        }
+
+        function exportToNotebook() {
+            // Get the table data including headers
+            var table = document.getElementById("roomTable");
+
+            // Create a new window for the export
+            var exportWindow = window.open('', '', 'width=800,height=600');
+            
+            // Build the export content
+            var exportContent = `
+                <!-- Place the logo here -->
+                <img src="https://media.licdn.com/dms/image/D560BAQGP-8VTW1NgPA/company-logo_400_400/0/1666698378390?e=2147483647&v=beta&t=eBxDmyLHmGpYBGU_MSr7VJ6J37OoMQ8jFT_vdTZr2hk" alt="Company Logo" width="150" height="130">
+                <h1>Servis konvektorjev</h1>
+                <p>Ime stavbe: ${document.getElementById("buildingName").value}</p>
+            `;
+            
+            // Clone the original table and append to the export content
+            var clonedTable = table.cloneNode(true);
+            exportContent += clonedTable.outerHTML;
+            
+            // Add the desired text below the table
+            exportContent += `<p>T3 Tech d.o.o. Vojkova cesta 58, 1000 Ljubljana</p>`;
+            
+            // Set the content of the export window
+            exportWindow.document.write(exportContent);
+            
+            // Close the document write, so it finishes rendering
+            exportWindow.document.close();
+        }
+    </script>
+</body>
+</html>
