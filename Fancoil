@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Servis Konvektorjev</title>
+    <!-- Materialize CSS (For Android-like UI) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body {
+            background-color: #F5F5F5;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto;
+            width: 100px;
+            height: auto;
+        }
+        .input-field input {
+            border-bottom: 2px solid #0277BD !important;
+        }
+        .btn {
+            width: 100%;
+            margin-top: 10px;
+            background-color: #0288D1;
+        }
+        .btn:hover {
+            background-color: #0277BD;
+        }
+        .fixed-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #0288D1;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        .fixed-bottom-nav a {
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo -->
+    <div class="container center-align">
+        <img src="https://media.licdn.com/dms/image/D560BAQGP-8VTW1NgPA/company-logo_400_400/0/1666698378390?e=2147483647&v=beta&t=eBxDmyLHmGpYBGU_MSr7VJ6J37OoMQ8jFT_vdTZr2hk" alt="Company Logo" class="logo">
+        <h4>Servis Konvektorjev</h4>
+    </div>
+
+    <!-- Form -->
+    <div class="container">
+        <div class="input-field">
+            <input type="text" id="buildingName" required>
+            <label for="buildingName">Ime stavbe</label>
+        </div>
+
+        <div class="input-field">
+            <input type="text" id="roomName" required>
+            <label for="roomName">Pisarna</label>
+        </div>
+
+        <div class="input-field">
+            <input type="number" id="roomNumber" required>
+            <label for="roomNumber">Število konvektorjev</label>
+        </div>
+
+        <div class="input-field">
+            <input type="text" id="roomComment" required>
+            <label for="roomComment">Opomba</label>
+        </div>
+
+        <button class="btn waves-effect waves-light" type="button" onclick="addRoomData()">Dodaj</button>
+    </div>
+
+    <!-- Fan Coil Image -->
+    <div class="center-align">
+        <img src="https://ekonatim.rs/storage/slike/202207/sabiana-mo-crc-ekonatimrs-fancoil.png" alt="Fan coil" width="200" height="150">
+    </div>
+
+    <!-- Table -->
+    <div class="container">
+        <h5>Seznam konvektorjev</h5>
+        <table class="striped highlight">
+            <thead>
+                <tr>
+                    <th>Pisarna</th>
+                    <th>Število</th>
+                    <th>Opomba</th>
+                </tr>
+            </thead>
+            <tbody id="roomTable">
+            </tbody>
+        </table>
+        <button class="btn waves-effect waves-light" onclick="exportToNotebook()">Izvozi datoteko</button>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="fixed-bottom-nav">
+        <a href="#">Domov</a>
+        <a href="#">Profil</a>
+        <a href="#">Nastavitve</a>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function addRoomData() {
+            var roomTable = document.getElementById("roomTable");
+            var roomName = document.getElementById("roomName").value;
+            var roomNumber = document.getElementById("roomNumber").value;
+            var roomComment = document.getElementById("roomComment").value;
+
+            if (roomName.trim() === "" || roomNumber.trim() === "" || roomComment.trim() === "") {
+                alert("Prosimo, izpolnite vsa polja.");
+                return;
+            }
+
+            var newRow = roomTable.insertRow();
+            newRow.innerHTML = `<td>${roomName}</td><td>${roomNumber}</td><td>${roomComment}</td>`;
+
+            // Clear inputs
+            document.getElementById("roomName").value = "";
+            document.getElementById("roomNumber").value = "";
+            document.getElementById("roomComment").value = "";
+        }
+
+        function exportToNotebook() {
+            var table = document.getElementById("roomTable").outerHTML;
+            var buildingName = document.getElementById("buildingName").value;
+
+            var exportContent = `
+                <h1>Servis Konvektorjev</h1>
+                <p>Ime stavbe: ${buildingName}</p>
+                ${table}
+                <p>T3 Tech d.o.o. Vojkova cesta 58, 1000 Ljubljana</p>
+            `;
+
+            var exportWindow = window.open('', '', 'width=800,height=600');
+            exportWindow.document.write(exportContent);
+            exportWindow.document.close();
+        }
+    </script>
+
+    <!-- Materialize JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</body>
+</html>
